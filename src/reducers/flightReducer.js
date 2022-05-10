@@ -24,3 +24,20 @@ export const FlightsReducer = (state = { flights: [] }, action) => {
             return state;
     }
 };
+
+
+
+// import { createSlice } from '@reduxjs/toolkit'
+
+// export const FlightsReducer = createSlice({
+//     name: 'Flights',
+//     initialState: { flights: [] },
+//     reducers: {
+//         allFlights: (state, action) => {
+//             state.loading = false
+//             state.flights = action.payload;
+//         }
+//     },
+// });
+
+//export default FlightsReducer.reducer;
