@@ -28,14 +28,14 @@ export const searchFlights = (search) => async (dispatch) => {
     try {
         dispatch({ type: ALL_FLIGHT_REQUEST });
 
-        let url = `https://api.spacexdata.com/v3/launches?upcoming=${true}`
+        let url = `https://api.spacexdata.com/v3/launches`
 
         const { data } = await axios.get(url);
-        // const searchName = data.filter(flight => flight.rocket.rocket_name.toLowerCase().includes(search.toLowerCase()));
-        console.log(data,"hhhh");
+        const searchName = data.filter(flight => flight.rocket.rocket_name.toLowerCase().includes(search.toLowerCase()));
+
         dispatch({
             type: ALL_FLIGHT_SUCCESS,
-            payload: data,
+            payload: searchName,
         });
     } catch (error) {
         dispatch({
@@ -46,19 +46,47 @@ export const searchFlights = (search) => async (dispatch) => {
 };
 
 
+
+
+
+
 export const filterLastYear = () => async (dispatch) => {
     try {
         dispatch({ type: ALL_FLIGHT_REQUEST });
 
-        const d = new Date();
+        // const d = new Date();
 
-        let url = `https://api.spacexdata.com/v3/launches?launch_year=${d.getFullYear() - 1}`
+        // let url = `https://api.spacexdata.com/v3/launches?launch_year=${d.getFullYear() - 1}`
+        const { data } = await axios.get(`https://api.spacexdata.com/v3/launches`);
 
-        const { data } = await axios.get(url);
+        const lastYear = data.filter(flight => (new Date(flight.launch_date_utc).getUTCFullYear() === new Date().getUTCFullYear() - 1));
 
         dispatch({
             type: ALL_FLIGHT_SUCCESS,
-            payload: data,
+            payload: lastYear,
+        });
+    } catch (error) {
+        dispatch({
+            type: ALL_FLIGHT_FAIL,
+            payload: error.response.data,
+        });
+    }
+};
+
+export const filterLastMonth = () => async (dispatch) => {
+    try {
+        dispatch({ type: ALL_FLIGHT_REQUEST });
+
+        // const d = new Date();
+
+        // let url = `https://api.spacexdata.com/v3/launches?launch_year=${d.getFullYear() - 1}`
+        const { data } = await axios.get(`https://api.spacexdata.com/v3/launches`);
+
+        const lastMonth = data.filter(flight => (new Date(flight.launch_date_utc).getUTCFullYear() === new Date().getUTCFullYear() && new Date(flight.launch_date_utc).getUTCMonth() === new Date().getUTCMonth() - 1));
+
+        dispatch({
+            type: ALL_FLIGHT_SUCCESS,
+            payload: lastMonth,
         });
     } catch (error) {
         dispatch({
@@ -74,6 +102,27 @@ export const filterLunchStatus = (status) => async (dispatch) => {
         dispatch({ type: ALL_FLIGHT_REQUEST });
 
         const { data } = await axios.get(`https://api.spacexdata.com/v3/launches?launch_success=${status}`);
+
+        dispatch({
+            type: ALL_FLIGHT_SUCCESS,
+            payload: data,
+        });
+    } catch (error) {
+        dispatch({
+            type: ALL_FLIGHT_FAIL,
+            payload: error,
+        });
+    }
+};
+
+
+export const upcomingFlights = () => async (dispatch) => {
+    try {
+        dispatch({ type: ALL_FLIGHT_REQUEST });
+
+        let url = `https://api.spacexdata.com/v3/launches/upcoming`
+
+        const { data } = await axios.get(url);
 
         dispatch({
             type: ALL_FLIGHT_SUCCESS,
