@@ -46,31 +46,6 @@ export const searchFlights = (search) => async (dispatch) => {
 };
 
 
-// export const searchFlights = () => async (dispatch) => {
-//     try {
-//         dispatch({ type: ALL_FLIGHT_REQUEST });
-
-//         let url = `https://api.spacexdata.com/v3/launches`
-
-//         const { data } = await axios.get(url);
-
-//         const lastMonth = data.filter(flight => (new Date(flight.launch_date_utc).getUTCFullYear() === new Date().getUTCFullYear() && new Date(flight.launch_date_utc).getUTCMonth() === new Date().getUTCMonth() - 1));
-
-//         console.log(lastMonth, "month");
-
-//         dispatch({
-//             type: ALL_FLIGHT_SUCCESS,
-//             payload: lastMonth,
-//         });
-//     } catch (error) {
-//         dispatch({
-//             type: ALL_FLIGHT_FAIL,
-//             payload: error,
-//         });
-//     }
-// };
-
-
 export const filterLastYear = () => async (dispatch) => {
     try {
         dispatch({ type: ALL_FLIGHT_REQUEST });
